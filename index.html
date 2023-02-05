@@ -1,0 +1,60 @@
+<canvas id="myCanvas">
+
+</canvas>
+
+<script>
+  const canvas = document.getElementById("myCanvas");
+  const ctx = canvas.getContext("2d");
+
+  // Set the dimensions of the canvas
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Create an array to hold the raindrops
+  const raindrops = [];
+
+  // Create the raindrop object
+  function Raindrop(x, y, vy) {
+    this.x = x;
+    this.y = y;
+    this.vy = vy;
+  }
+
+  // Update the position of the raindrop
+  Raindrop.prototype.update = function() {
+    this.y += this.vy;
+    if (this.y > canvas.height) {
+      this.y = -10;
+    }
+  }
+
+  // Draw the raindrop on the canvas
+  Raindrop.prototype.draw = function() {
+    const img = new Image();
+    img.src = 'raindrop.png';
+    ctx.drawImage(img, this.x, this.y, 10, 20);
+  }
+
+  // Create a new raindrop every 10 milliseconds
+  setInterval(function() {
+    const x = Math.random() * canvas.width;
+    const y = -10;
+    const vy = Math.random() * 5 + 5;
+    raindrops.push(new Raindrop(x, y, vy));
+  }, 1000);
+
+  // Animate the raindrops
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < raindrops.length; i++) {
+      raindrops[i].update();
+      raindrops[i].draw();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+
+</script>
+
